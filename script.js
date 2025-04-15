@@ -25,6 +25,7 @@ function getComputerChoice(){
 
 function getHumanChoice(){
     let input=prompt("Pick Rock Paper Scissors:");
+   input=input.charAt(0).toUpperCase()+input.slice(1).toLowerCase();
     return input;
 }
 
