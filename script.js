@@ -38,7 +38,7 @@ function playRound(){
         humanScore++;
          console.log(`Human WINS`);
         }
-        else if(human==computer){
+        else if(human===computer){
             console.log(`ITS A TIE!`);
         }
         else {
@@ -54,7 +54,7 @@ function playGame(){
 
         playRound();
     }
-    console.log(`Human won ${humanScore} times, and computer won ${computerScore}.`);
+    console.log(`Human won ${humanScore} times, and computer won ${computerScore} times.`);
 }
 
 let humanScore=0;
