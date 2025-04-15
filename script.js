@@ -36,16 +36,13 @@ function playRound(){
     if((human=="Paper" && computer=="Rock") || (human=="Scissors" && computer=="Paper")||(human=="Rock"&& computer=="Scissors")){
         humanScore++;
          console.log(`Human WINS`);
-         console.log('');
         }
         else if(human==computer){
             console.log(`ITS A TIE!`);
-            console.log('');
         }
         else {
             computerScore++;
             console.log(`PC WINS`);
-            console.log('');
     }
   }
 
