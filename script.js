@@ -1,47 +1,65 @@
-console.log("PUMPAJ");
+function getComputerChoice(){
 
-function getRandomInt(min, max) {
-    const minCeiled = Math.ceil(min);
-    const maxFloored = Math.floor(max);
-    return Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled); // The maximum is exclusive and the minimum is inclusive
-  }
-  let a = getRandomInt(1,4);
-  console.log(a);
+    const index = Math.floor(Math.random() * 3)+ 1;
+    let pc;
 
-  const index = Math.floor(Math.random() * 3)+ 1;
-  console.log(index);
 
-  let string='';
-  let pc='';
-function placeValue(num, text){
-
-    switch(num){
+    switch(index){
         case 1:
-            text = "Rock";
+            pc = "Rock";
             break;
         case 2:
-            text = "Paper";
+            pc = "Paper";
             break;
         case 3:
-            text = "Scissors";
+            pc = "Scissors";
             break;
         }
-        return text;
-    }
 
-  console.log("String is: ",placeValue(a,string), "and PC is:",placeValue(index,pc));
+  return pc;
+
+}
 
 
-  function compare(p,m){
-    if((p=="Paper" && m=="Rock") || (p=="Scissors" && m=="Paper")||(p=="Rock"&& m=="Scissors")){
-        return console.log(`${p} WINS`);
-    }
-    else if((m=="Paper" && p=="Rock") || (m=="Scissors" && p=="Paper")||(m=="Rock"&& p=="Scissors")){
-        return console.log(`${m} WINS`);
-    }
-    else if((p=="Rock" && m=="Rock") || (p=="Paper" && m=="Paper")||(p=="Scissors"&& m=="Scissors")){
-        return console.log(`ITS A TIE!`);
+
+
+function getHumanChoice(){
+    let input=prompt("Pick Rock Paper Scissors:");
+    return input;
+}
+
+function playRound(){
+    const human=getHumanChoice();
+    const computer=getComputerChoice();
+    console.log(`Human Chose: ${human}`);
+    console.log(`Computer Chose: ${computer}.`);
+    if((human=="Paper" && computer=="Rock") || (human=="Scissors" && computer=="Paper")||(human=="Rock"&& computer=="Scissors")){
+        humanScore++;
+         console.log(`Human WINS`);
+         console.log('');
+        }
+        else if(human==computer){
+            console.log(`ITS A TIE!`);
+            console.log('');
+        }
+        else {
+            computerScore++;
+            console.log(`PC WINS`);
+            console.log('');
     }
   }
 
-  console.log(compare(placeValue(a,string),placeValue(index,pc)));
+  
+function playGame(){
+    for( let i=0;i<5;i++)
+    {
+
+        playRound();
+    }
+    console.log(`Human won ${humanScore} times, and computer won ${computerScore}.`);
+}
+
+let humanScore=0;
+let computerScore=0;
+
+playGame();
