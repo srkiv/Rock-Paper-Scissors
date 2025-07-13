@@ -1,0 +1,34 @@
+body {
+    background-color: #BCD4CC;
+    margin: 0;
+    height: 100vh; 
+}
+.game{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    height: 100vh;
+
+}
+
+.container{
+    background-color: red;
+    width:200px;
+    height:200px;
+    
+}
+
+.dialog{
+    background-color: white;
+    width: 800px;
+    height: 200px;
+    margin:20px;
+ 
+    border-bottom-left-radius: 20px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 100px;
+    border-bottom-right-radius: 100px;
+    border: rgb(73, 73, 253) 10px solid;
+
+}
