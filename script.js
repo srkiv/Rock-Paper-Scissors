@@ -68,9 +68,13 @@ let computerScore=0;
 const startBtn=document.querySelector(".pushable");
 const startGame=document.querySelector(".start");
 const pressStart=document.querySelector(".press");
+let btnPressed=false;
 startBtn.addEventListener("click",() =>{
     startGame.style.display="flex";
     pressStart.style.display="none";
+    btnPressed=true;
+     textBox.textContent = "CHOOSE WISELY!";
+           
 
 })
 
@@ -106,6 +110,7 @@ function typeWriter() {
 // Start first message
 typeWriter();
 
+
 dialogBox.addEventListener("click", () => {
     if (charIndex < dialog[i].length) {
         // If text isn't finished, skip to full text immediately
@@ -114,14 +119,14 @@ dialogBox.addEventListener("click", () => {
     } else {
         // Go to next message
         i++;
-        if (i < dialog.length) {
+        if (i < dialog.length && !btnPressed) {
             currentText = "";
             charIndex = 0;
             textBox.textContent = "";
             typeWriter();
-        } else {
-            textBox.textContent = "YOU DIDNT HIT START!";
+        }  else if (!btnPressed){
+            textBox.textContent = "YOU DIDN'T HIT START!";
            
         }
     }
-});
+}); 
