@@ -63,3 +63,65 @@ let humanScore=0;
 let computerScore=0;
 
 //playGame();
+
+
+const startBtn=document.querySelector(".pushable");
+const startGame=document.querySelector(".start");
+const pressStart=document.querySelector(".press");
+startBtn.addEventListener("click",() =>{
+    startGame.style.display="flex";
+    pressStart.style.display="none";
+
+})
+
+
+
+
+
+
+
+
+
+const dialog = [
+    "Welcome to the game Adventurer! ▼",
+    "Hit Start and Good luck! ▼"
+];
+
+let i = 0; // index for dialog array
+let charIndex = 0; // index for current character
+let currentText = "";
+const textBox = document.getElementById("dialog-text");
+const dialogBox=document.querySelector(".dialog-box");
+//const nextBtn = document.getElementById("next");
+
+function typeWriter() {
+    if (charIndex < dialog[i].length) {
+        currentText += dialog[i].charAt(charIndex);
+        textBox.textContent = currentText;
+        charIndex++;
+        setTimeout(typeWriter, 40); // adjust speed here (40ms per letter)
+    }
+}
+
+// Start first message
+typeWriter();
+
+dialogBox.addEventListener("click", () => {
+    if (charIndex < dialog[i].length) {
+        // If text isn't finished, skip to full text immediately
+        textBox.textContent = dialog[i];
+        charIndex = dialog[i].length;
+    } else {
+        // Go to next message
+        i++;
+        if (i < dialog.length) {
+            currentText = "";
+            charIndex = 0;
+            textBox.textContent = "";
+            typeWriter();
+        } else {
+            textBox.textContent = "YOU DIDNT HIT START!";
+           
+        }
+    }
+});
