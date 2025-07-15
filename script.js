@@ -89,6 +89,7 @@ const hatDialog = [
 const textBox = document.getElementById("dialog-text");
 const dialog = document.querySelector(".dialog");
 const hat = document.getElementById("hat");
+const cat=document.getElementById("cat");
 const startBtn = document.querySelector(".pushable");     // The START button itself
 const startGame = document.querySelector(".start");       // The game container to show (display:flex)
 const pressStart = document.querySelector(".press");
@@ -151,7 +152,7 @@ function advanceMainDialog() {
       mainDialog = [
         "You didnt hit start!▼",
         "What are you waiting for!▼",
-        "We don't have the whole day man!▼",
+        "We don't have the whole day lad!▼",
         "I will use my magic on you!▼",
         "I'm a magic cat you know!!▼"
       ];
@@ -222,6 +223,10 @@ hat.addEventListener("click", (e) => {
     hat.classList.remove("jump");
   }, { once: true });
 });
+
+cat.addEventListener("click",(e)=>{
+    e.stopPropagation();
+})
 
 // Start button logic
 startBtn.addEventListener("click", () => {
