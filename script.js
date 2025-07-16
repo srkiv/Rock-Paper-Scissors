@@ -76,7 +76,9 @@ const startDialog = [
   "Choose wisely!▼",
   "This is just a game of rock paper scissors▼",
   "Or is it?▼",
-  "Oh you like pressing the dialog box, looking for funny lines▼ "
+  "Oh you like pressing the dialog box, looking for funny lines▼ ",
+  "Keep on pressing...▼ ",
+  "...▼"
 ];
 
 const hatDialog = [
@@ -93,6 +95,20 @@ const cat=document.getElementById("cat");
 const startBtn = document.querySelector(".pushable");     // The START button itself
 const startGame = document.querySelector(".start");       // The game container to show (display:flex)
 const pressStart = document.querySelector(".press");
+const battlefield=document.getElementById("battlefield");
+
+const hands = {
+  rock: "images/rockGame.png",
+  paper: "images/paperGame.png",
+  scissors: "images/scissorsGame.png"
+};
+
+const paws={
+  rock: "images/catRock.png",
+  paper:"images/catPaper.png",
+  scissors:"images/catScissors.png"
+
+};
 
 // State variables
 let btnPressed = false;
@@ -112,45 +128,94 @@ let currentDialogType = "main";
 // Timeout ID for typing animation
 let typingTimeout = null;
 
-// Typing function, types a line character by character
 function typeLine(line, onComplete) {
   if (typingTimeout) {
     clearTimeout(typingTimeout);
     typingTimeout = null;
   }
 
-  let charIdx = 0;
-  textBox.textContent = "";
+  // Instantly show if line contains <br>
+  if (line.includes("<br>")) {
+    textBox.innerHTML = line;
+    if (onComplete) onComplete();
+    return;
+  }
+
+  textBox.innerHTML = "";
+  let i = 0;
 
   function typeChar() {
-    if (charIdx < line.length) {
-      textBox.textContent += line.charAt(charIdx);
-      charIdx++;
-      typingTimeout = setTimeout(typeChar, 40);
-    } else {
+    if (i >= line.length) {
       typingTimeout = null;
       if (onComplete) onComplete();
+      return;
+    }
+    if (line[i] === "<") {
+      const tagEnd = line.indexOf(">", i);
+      if (tagEnd === -1) {
+        textBox.innerHTML += "&lt;";
+        i++;
+      } else {
+        const tag = line.substring(i, tagEnd + 1);
+        textBox.innerHTML += tag;
+        i = tagEnd + 1;
+      }
+      setTimeout(typeChar, 40);
+    } else {
+      const nextChar = line.charAt(i);
+      const textNode = document.createTextNode(nextChar);
+      textBox.appendChild(textNode);
+      i++;
+      typingTimeout = setTimeout(typeChar, 40);
     }
   }
 
   typeChar();
 }
-
-// Show next line of main dialog
 function advanceMainDialog() {
   if (mainTyping) {
-    // Skip typing animation to full line if typing
     if (typingTimeout) clearTimeout(typingTimeout);
-    textBox.textContent = mainDialog[mainIndex];
+    typingTimeout = null;
+    textBox.innerHTML = mainDialog[mainIndex];
     mainTyping = false;
     return;
   }
 
   mainIndex++;
+
+  // When reaching the end of finalDialog after game over
+  if (mainIndex >= mainDialog.length) {
+    // If game was playing and this was final dialog, reset
+    if (btnPressed) {
+      // Reset game state for new game
+      btnPressed = false;
+      playerScore = 0;
+      enemyScore = 0;
+      roundNumber = 0;
+
+      // Show start button & hide game UI
+      pressStart.style.display = "block";
+      startGame.style.display = "none";
+      battlefield.style.display = "none";
+
+      // Reset main dialog to intro
+      mainDialog = introDialog;
+      mainIndex = 0;
+      currentDialogType = "main";
+
+      mainTyping = true;
+      typeLine(mainDialog[mainIndex], () => {
+        mainTyping = false;
+      });
+
+      return; // Stop further advance since we reset dialog
+    }
+  }
+
   if (mainIndex >= mainDialog.length) {
     if (!btnPressed) {
       mainDialog = [
-        "You didnt hit start!▼",
+        "You didn't hit start!▼",
         "What are you waiting for!▼",
         "We don't have the whole day lad!▼",
         "I will use my magic on you!▼",
@@ -158,17 +223,16 @@ function advanceMainDialog() {
       ];
       mainIndex = 0;
     } else {
-      // End of main dialog; stay on last line
       mainIndex = mainDialog.length - 1;
       return;
     }
   }
+
   mainTyping = true;
   typeLine(mainDialog[mainIndex], () => {
     mainTyping = false;
   });
 }
-
 // Show next line of hat dialog
 function advanceHatDialog() {
   if (hatTyping) {
@@ -227,22 +291,28 @@ hat.addEventListener("click", (e) => {
 cat.addEventListener("click",(e)=>{
     e.stopPropagation();
 })
+let gameOver = false;
 
-// Start button logic
+// Start button click handler
 startBtn.addEventListener("click", () => {
- startGame.style.display = "flex";
+  battlefield.style.display = "block";
+  startGame.style.display = "flex";
   pressStart.style.display = "none";
+
   btnPressed = true;
+  gameOver = false; // <--- Reset game over state!
+
   mainDialog = startDialog;
   mainIndex = 0;
   currentDialogType = "main";
   mainTyping = true;
+
   typeLine(mainDialog[mainIndex], () => {
     mainTyping = false;
   });
 });
 
-// On load, show first main dialog line
+// On page load, show intro dialog
 window.onload = () => {
   currentDialogType = "main";
   mainIndex = 0;
@@ -251,3 +321,114 @@ window.onload = () => {
     mainTyping = false;
   });
 };
+
+
+let playerScore = 0;
+let enemyScore = 0;
+let roundNumber = 0;
+const totalRounds = 5;
+
+
+
+function startBattle(playerChoice) {
+  const enemyChoice = ["rock", "paper", "scissors"][Math.floor(Math.random() * 3)];
+
+  const playerHand = document.querySelector(".player");
+  const enemyHand = document.querySelector(".enemy");
+
+  
+  playerHand.style.backgroundImage = "url('images/rockGame.png')"; // player's hand
+  enemyHand.style.backgroundImage = "url('images/catRock.png')";   // enemy's cat paw
+
+ 
+  playerHand.style.right = "50px";
+  enemyHand.style.left = "50px";
+  if (gameOver) return;
+  
+  setTimeout(() => {
+    playerHand.classList.add("shake");
+    enemyHand.classList.add("shake");
+  }, 500);
+
+
+setTimeout(() => {
+  playerHand.classList.remove("shake");
+  enemyHand.classList.remove("shake");
+
+
+  playerHand.style.backgroundImage = `url('${hands[playerChoice]}')`;
+
+
+  enemyHand.style.backgroundImage = `url('${paws[enemyChoice]}')`;
+
+  
+  setTimeout(() => {
+    checkWinner(playerChoice, enemyChoice);
+  }, 700); 
+}, 1500);
+
+
+function checkWinner(player, enemy) {
+  if (gameOver) return; // Stop if game over
+
+  let resultText = "";
+
+  if ((player === "rock" && enemy === "scissors") ||
+      (player === "paper" && enemy === "rock") ||
+      (player === "scissors" && enemy === "paper")) {
+    resultText = "You Win this round!";
+    playerScore++;
+  } else if (player !== enemy) {
+    resultText = "You Lose this round!";
+    enemyScore++;
+  } else {
+    resultText = "It's a Tie!";
+  }
+
+  roundNumber++;
+
+  let roundSummary =
+    `Round ${roundNumber} / ${totalRounds} <br> Results:<br>` +
+    `You chose: ${player} <br>` +
+    `Enemy chose: ${enemy} <br>` +
+    `${resultText} <br>` +
+    `Current Score:<br> You: ${playerScore}, Enemy: ${enemyScore}`;
+
+  let roundDialog = [roundSummary + "▼"];
+
+  // Set dialog for this round (with typing effect)
+  mainDialog = roundDialog;
+  mainIndex = 0;
+  currentDialogType = "main";
+
+  mainTyping = true;
+  typeLine(mainDialog[mainIndex], () => {
+    mainTyping = false;
+
+    // After typing finishes, check if game is over
+    if (roundNumber >= totalRounds) {
+      gameOver = true;
+
+      let finalDialog = [
+        "------▼"
+      ];
+
+      if (playerScore > enemyScore) {
+        finalDialog.push("GAME OVER! You WON the game!🎉▼");
+      } else if (playerScore < enemyScore) {
+        finalDialog.push("GAME OVER! You LOST the game!😿▼");
+      } else {
+        finalDialog.push("GAME OVER! It's a TIE!🤝▼");
+      }
+
+      finalDialog.push("Press the dialog to reset.▼");
+
+      // Append the final dialog after current result
+      mainDialog = [roundSummary + "▼"].concat(finalDialog);
+      mainIndex = 1; // move to final dialog (index 1)
+
+      // Let player click dialog to reset
+    }
+  });
+}
+}
