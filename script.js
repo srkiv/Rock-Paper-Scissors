@@ -128,6 +128,9 @@ let currentDialogType = "main";
 // Timeout ID for typing animation
 let typingTimeout = null;
 
+
+let dialogLocked = false;
+
 function typeLine(line, onComplete) {
   if (typingTimeout) {
     clearTimeout(typingTimeout);
@@ -184,32 +187,29 @@ function advanceMainDialog() {
   mainIndex++;
 
   // When reaching the end of finalDialog after game over
-  if (mainIndex >= mainDialog.length) {
-    // If game was playing and this was final dialog, reset
-    if (btnPressed) {
-      // Reset game state for new game
-      btnPressed = false;
-      playerScore = 0;
-      enemyScore = 0;
-      roundNumber = 0;
+  if (mainIndex >= mainDialog.length && gameOver) {
+    btnPressed = false;
+    gameOver = false;
+    playerScore = 0;
+    enemyScore = 0;
+    roundNumber = 0;
 
-      // Show start button & hide game UI
-      pressStart.style.display = "block";
-      startGame.style.display = "none";
-      battlefield.style.display = "none";
+    // Show start button & hide game UI
+    pressStart.style.display = "block";
+    startGame.style.display = "none";
+    battlefield.style.display = "none";
 
-      // Reset main dialog to intro
-      mainDialog = introDialog;
-      mainIndex = 0;
-      currentDialogType = "main";
+    // Reset dialog to intro
+    mainDialog = introDialog;
+    mainIndex = 0;
+    currentDialogType = "main";
 
-      mainTyping = true;
-      typeLine(mainDialog[mainIndex], () => {
-        mainTyping = false;
-      });
+    mainTyping = true;
+    typeLine(mainDialog[mainIndex], () => {
+      mainTyping = false;
+    });
 
-      return; // Stop further advance since we reset dialog
-    }
+    return;
   }
 
   if (mainIndex >= mainDialog.length) {
@@ -233,6 +233,7 @@ function advanceMainDialog() {
     mainTyping = false;
   });
 }
+
 // Show next line of hat dialog
 function advanceHatDialog() {
   if (hatTyping) {
@@ -255,6 +256,7 @@ function advanceHatDialog() {
 
 // Handle dialog box clicks (main dialog)
 dialog.addEventListener("click", () => {
+  if (dialogLocked) return; // Ignore clicks during battle
   if (currentDialogType === "hat") {
     // Switch to main dialog on click
     currentDialogType = "main";
@@ -343,7 +345,9 @@ function startBattle(playerChoice) {
  
   playerHand.style.right = "50px";
   enemyHand.style.left = "50px";
-  if (gameOver) return;
+if (gameOver) return;
+
+dialogLocked = true; // Prevent dialog clicks during battle
   
   setTimeout(() => {
     playerHand.classList.add("shake");
@@ -369,66 +373,59 @@ setTimeout(() => {
 
 
 function checkWinner(player, enemy) {
-  if (gameOver) return; // Stop if game over
-
   let resultText = "";
 
   if ((player === "rock" && enemy === "scissors") ||
       (player === "paper" && enemy === "rock") ||
       (player === "scissors" && enemy === "paper")) {
-    resultText = "You Win this round!";
+    resultText = "<span style='color:red'>You Won this round!</span>";
     playerScore++;
   } else if (player !== enemy) {
-    resultText = "You Lose this round!";
+    resultText = "<span style='color:red'>You Lost this round!</span>";
     enemyScore++;
   } else {
-    resultText = "It's a Tie!";
+    resultText = "<span style='color:black'>It's a Tie!</span>";
   }
 
   roundNumber++;
 
   let roundSummary =
-    `Round ${roundNumber} / ${totalRounds} <br> Results:<br>` +
-    `You chose: ${player} <br>` +
-    `Enemy chose: ${enemy} <br>` +
+    `Round <span style='color:black'> ${roundNumber}</span> /  <span style='color:black'>${totalRounds}</span> <br> Results:<br>` +
+    `You chose: <span style='color:black'> ${player} </span><br>` +
+    `Enemy chose:<span style='color:black'> ${enemy}</span> <br>` +
     `${resultText} <br>` +
-    `Current Score:<br> You: ${playerScore}, Enemy: ${enemyScore}`;
+    `Current Score:<br> You: <span style='color:black'> ${playerScore} </span>, Enemy: <span style='color:black'>${enemyScore}</span>`;
 
-  let roundDialog = [roundSummary + "▼"];
+  mainDialog = []; // Clear mainDialog first
 
-  // Set dialog for this round (with typing effect)
-  mainDialog = roundDialog;
+  if (roundNumber >= totalRounds) {
+    gameOver = true;
+
+    // Add GAME OVER to the same text immediately
+    if (playerScore > enemyScore) {
+      roundSummary += `<br><span style='color:red'>GAME OVER! You WON the game!🎉</span>`;
+    } else if (playerScore < enemyScore) {
+      roundSummary += `<br><span style='color:red'>GAME OVER! You LOST the game!😿</span>`;
+    } else {
+      roundSummary += `<br><span style='color:red'>GAME OVER! It's a TIE!🤝</span>`;
+    }
+
+    // First message: round 5/5 with the result and GAME OVER
+    mainDialog.push(roundSummary + "▼");
+
+    // Second message: Restart prompt (on next click)
+    mainDialog.push("Press the dialog box to play again!▼");
+  } else {
+    // Normal round
+    mainDialog.push(roundSummary + "▼");
+  }
+
   mainIndex = 0;
   currentDialogType = "main";
-
   mainTyping = true;
-  typeLine(mainDialog[mainIndex], () => {
+
+typeLine(mainDialog[mainIndex], () => {
     mainTyping = false;
-
-    // After typing finishes, check if game is over
-    if (roundNumber >= totalRounds) {
-      gameOver = true;
-
-      let finalDialog = [
-        "------▼"
-      ];
-
-      if (playerScore > enemyScore) {
-        finalDialog.push("GAME OVER! You WON the game!🎉▼");
-      } else if (playerScore < enemyScore) {
-        finalDialog.push("GAME OVER! You LOST the game!😿▼");
-      } else {
-        finalDialog.push("GAME OVER! It's a TIE!🤝▼");
-      }
-
-      finalDialog.push("Press the dialog to reset.▼");
-
-      // Append the final dialog after current result
-      mainDialog = [roundSummary + "▼"].concat(finalDialog);
-      mainIndex = 1; // move to final dialog (index 1)
-
-      // Let player click dialog to reset
-    }
-  });
-}
-}
+    dialogLocked = false; // Unlock dialog after showing text
+});
+}}
