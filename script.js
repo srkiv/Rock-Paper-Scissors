@@ -403,11 +403,11 @@ function checkWinner(player, enemy) {
 
     // Add GAME OVER to the same text immediately
     if (playerScore > enemyScore) {
-      roundSummary += `<br><span style='color:red'>GAME OVER! You WON the game!🎉</span>`;
+      roundSummary += `<br><span style='color:red'>GAME OVER! You WON the game!</span>`;
     } else if (playerScore < enemyScore) {
       roundSummary += `<br><span style='color:red'>GAME OVER! You LOST the game!😿</span>`;
     } else {
-      roundSummary += `<br><span style='color:red'>GAME OVER! It's a TIE!🤝</span>`;
+      roundSummary += `<br><span style='color:red'>GAME OVER! It's a TIE!</span>`;
     }
 
     // First message: round 5/5 with the result and GAME OVER
