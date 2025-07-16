@@ -1,189 +1,145 @@
 body {
-   
     margin: 0;
     padding: 0;
     width: 100%;
     height: 100%;
-    overflow-x: hidden; /* Prevent horizontal scroll */
-    
+    overflow-x: hidden; 
 }
-.game{
+.game {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     width: 100%;
     height: 100vh;
-
 }
-#bar{
-        width: 100%;
-    height: auto; /* Keeps the aspect ratio */
-    display: block; /* Removes extra bottom space from inline images */
+#bar {
+    width: 100%;
+    height: auto;
+    display: block;
 }
-
-.container{
-    
-    width:100%;
-    height:800px;
+.container {
+    width: 100%;
+    height: 50em; /* 800px */
     display: flex;
-    
 }
 #battlefield {
     display: none;
-  position: absolute;
-  top: 20px; /* Push it up from the top of the screen */
-  left: 50%;
-  transform: translateX(-50%);
-  width: 800px;
-  height: 400px;
-  background-color: #bcd;
-  overflow: hidden;
-  border: 4px solid black;
+    position: absolute;
+    top: 1.25em; /* 20px */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50em; /* 800px */
+    height: 25em; /* 400px */
+    background-color: #bcd;
+    overflow: hidden;
+    border: 0.25em solid black; /* 4px */
 }
-
-.dialog{
+.dialog {
     background-color: white;
-    width: 700px;
-    height: 200px;
-   margin:20px;
-
- 
-    border-radius: 20px;
-    border-top-right-radius: 100px;
-    border-bottom-right-radius: 100px;
-
-    border: rgb(73, 73, 253) 10px double;
+    width: 43.75em; /* 700px */
+    height: 12.5em; /* 200px */
+    margin: 1.25em; /* 20px */
+    border-radius: 1.25em; /* 20px */
+    border-top-right-radius: 6.25em; /* 100px */
+    border-bottom-right-radius: 6.25em; /* 100px */
+    border: rgb(73, 73, 253) 0.625em double; /* 10px */
     display: flex;
     align-self: flex-start;
-     margin-top: 250px;
+    margin-top: 15.625em; /* 250px */
 }
-
-.catInHat{
+.catInHat {
     position: relative;
 }
-#cat{
-    height: 200px;
-    width: 200px;
-
+#cat {
+    height: 12.5em; /* 200px */
+    width: 12.5em; /* 200px */
 }
-
-#hat{
+#hat {
     position: absolute;
-    height: 190px;
-    width: 190px;
-
-      position: absolute; /* Hat goes on top of the cat */
-    top: -93px;             /* Adjust to position the hat */
-    left: 50%;          /* Center horizontally */
-    transform: translateX(-50%); /* Correct centering */
-    
-   
- 
+    height: 11.875em; /* 190px */
+    width: 11.875em; /* 190px */
+    top: -5.8125em; /* -93px */
+    left: 50%;
+    transform: translateX(-50%);
 }
-
-
-.bottom{
-
-    position: absolute;   /* Overlay */
+.bottom {
+    position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 500px;
+    height: 31.25em; /* 500px */
     display: flex;
-    
-    
- 
     background-image: url("images/wall1.png");
-    
 }
-   
-
-.rps-buttons{
-    margin-top: 250px;
-    margin-left: 200px;
+.rps-buttons {
+    margin-top: 15.625em; /* 250px */
+    margin-left: 12.5em; /* 200px */
     display: flex;
-    gap: 50px;
+    gap: 3.125em; /* 50px */
 }
-.rps-buttons button{
-    width: 200px;
-    height: 200px;
-    
-    
+.rps-buttons button {
+    width: 12.5em; /* 200px */
+    height: 12.5em; /* 200px */
 }
-.rounds{
+.rounds {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
-    margin-top: 210px;
+    margin-top: 13.125em; /* 210px */
 }
-li{
+li {
     list-style: none;
 }
-#brick{
-    height: 40px;
-    width: 40px;
-    border: #000000 solid 3px;
-    border-radius: 5px;
+#brick {
+    height: 2.5em; /* 40px */
+    width: 2.5em; /* 40px */
+    border: #000000 solid 0.1875em; /* 3px */
+    border-radius: 0.3125em; /* 5px */
 }
 .buttons {
     all: unset;
-    width: 200px;
-    height: 200px;
-    padding: 0 20px 0 0; /* padding only on right */
+    width: 12.5em; /* 200px */
+    height: 12.5em; /* 200px */
+    padding: 0 1.25em 0 0; /* 20px right */
     margin: 0;
     border: none;
-
     background-image: url('images/wall3.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-
     display: flex;
     align-items: center;
-    justify-content: center; /* Center image horizontally */
-    border: black solid 4px;
-
-    box-shadow: 4px 4px 0 #000000; /* shadow for depth */
+    justify-content: center;
+    border: black solid 0.25em; /* 4px */
+    box-shadow: 0.25em 0.25em 0 #000000; /* 4px */
     transition: transform 0.1s ease, box-shadow 0.1s ease;
     cursor: pointer;
 }
-
 .buttons:active {
-    transform: translate(4px, 4px);
+    transform: translate(0.25em, 0.25em); /* 4px */
     box-shadow: 0 0 0 #000000;
 }
-
 .buttons img {
-    width: 95%;  /* make image fill more */
+    width: 95%;
     height: 95%;
     object-fit: contain;
     display: block;
     pointer-events: none;
 }
-
-
-.start{
+.start {
     display: none;
 }
-
-
-
-
-
-
-  .pushable {
-    background:  rgb(1, 1, 7);
-    
-    border-radius: 12px;
+.pushable {
+    background: rgb(1, 1, 7);
+    border-radius: 0.75em; /* 12px */
     border: none;
     padding: 0;
     cursor: pointer;
-
-    outline-offset:10px;
-     font-family:"MyFont";
-  }
-  .front {
+    outline-offset: 0.625em; /* 10px */
+    font-family: "MyFont";
+}
+ .front {
     display: block;
     padding: 42px 82px;
     border-radius: 12px;
@@ -204,90 +160,67 @@ li{
 
     transform: translateY(-6px);
   }
-
-  .pushable:active .front {
-    transform: translateY(-2px);
-  }
-  .press{
+.pushable:active .front {
+    transform: translateY(-0.125em); /* -2px */
+}
+.press {
     display: flex;
     justify-content: center;
     align-items: center;
-    
-    margin-top: 255px;
-    margin-left:150px;
-    padding-left: 180px;
-    width: 800px;
-    height: 200px;
-  }
-
-
+    margin-top: 15.9375em; /* 255px */
+    margin-left: 9.375em; /* 150px */
+    padding-left: 11.25em; /* 180px */
+    width: 50em; /* 800px */
+    height: 12.5em; /* 200px */
+}
 @font-face {
     font-family: 'MyFont';
     src: url('fonts/nintendo.ttf') format('truetype');
 }
-
-  .dialog-box {
-    
-    font-size: 15px;
-    font-family:"MyFont";
-    color:  rgb(73, 73, 253);
-    width: 430px;
-    height: 200px;
+.dialog-box {
+    font-size: 0.9375em; /* 15px */
+    font-family: "MyFont";
+    color: rgb(73, 73, 253);
+    width: 26.875em; /* 430px */
+    height: 12.5em; /* 200px */
 }
-
-
-
-
-
 #hat {
-   
     cursor: pointer;
     transition: transform 0.3s ease;
 }
-
 .jump {
     animation: hatJump 0.6s ease;
 }
-
 @keyframes hatJump {
     0%   { transform: translateX(-50%) translateY(0); }
-    30%  { transform: translateX(-50%) translateY(-50px); }
+    30%  { transform: translateX(-50%) translateY(-3.125em); } /* -50px */
     60%  { transform: translateX(-50%) translateY(0); }
-    80%  { transform: translateX(-50%) translateY(-10px); }
+    80%  { transform: translateX(-50%) translateY(-0.625em); } /* -10px */
     100% { transform: translateX(-50%) translateY(0); }
 }
-
-
-
-
-
 .hand {
-  width: 200px;
-  height: 200px;
-  background-size: contain;
-  background-repeat: no-repeat;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  transition: left 0.5s, right 0.5s;
+    width: 12.5em; /* 200px */
+    height: 12.5em; /* 200px */
+    background-size: contain;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: left 0.5s, right 0.5s;
 }
-
 .hand.enemy {
-  left: -150px; /* Enemy paw starts offscreen LEFT */
+    left: -9.375em; /* -150px */
 }
-
 .hand.player {
-  right: -150px; /* Player hand starts offscreen RIGHT */
+    right: -9.375em; /* -150px */
 }
-
 @keyframes shake {
-  0% { transform: translateY(-50%) translateX(0); }
-  25% { transform: translateY(-50%) translateX(-5px); }
-  50% { transform: translateY(-50%) translateX(5px); }
-  75% { transform: translateY(-50%) translateX(-5px); }
-  100% { transform: translateY(-50%) translateX(0); }
+    0% { transform: translateY(-50%) translateX(0); }
+    25% { transform: translateY(-50%) translateX(-0.3125em); } /* -5px */
+    50% { transform: translateY(-50%) translateX(0.3125em); }  /* 5px */
+    75% { transform: translateY(-50%) translateX(-0.3125em); }
+    100% { transform: translateY(-50%) translateX(0); }
 }
-
 .shake {
-  animation: shake 0.5s ease-in-out 2;
+    animation: shake 0.5s ease-in-out 2;
 }
